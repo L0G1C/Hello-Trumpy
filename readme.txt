@@ -36,10 +36,20 @@ Features great, inspirational quotes such as:
 2. Activate the plugin through the 'Plugins' screen in WordPress
 3. Enjoy your Trump quotes on every Admin page. It's gonna be greeeeat!
 
+== Frequently Asked Questions ==
+
+= Why? =
+
+Because I choose to.
+
+== Screenshots ==
+1. A Quote by President Trump
+2. Another Quote by President Trump
 
 == Changelog ==
 
 = 1.0 =
 * Initial Version
 
+== Upgrade Notice ==
 

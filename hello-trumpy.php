@@ -13,31 +13,26 @@ License: GPLv2+
 function get_hello_trumpy_quote() {
     $url = "https://api.whatdoestrumpthink.com/api/v1/quotes/random";
 
-    // Curl object
-    $curl = curl_init();
-
-
-    curl_setopt($curl, CURLOPT_URL, $url);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER , 1); // Return actual value
-    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); // We don't care about SSL Verification
-
-    $result = curl_exec($curl);
-
-    if ($result == false){
-        $result = "Hello, Trumpy Error: " . curl_error($curl);
+    // Use WP Http to pull API data
+    if( !class_exists( 'WP_Http' ) ) {
+        include_once( ABSPATH . WPINC. '/class-http.php' );
     }
 
-    // We want to work with a PHP object form the Json to get the message
-    $result = json_decode($result);
-    $result = $result->message;
+    $result = wp_remote_request ($url);
 
-    // If the message is long (Trump is long-winded), split into two lines at the nearest word near the middle
-    if(strlen($result) >= 120){
-        $halfWayPos = strlen($result) / 2;
-        $nextWordPos = strpos($result, " ", $halfWayPos) + 1;
-        $result = substr_replace($result, "<br />",$nextWordPos, 0);
-    }
-    curl_close($curl);
+    if (!is_wp_error($result)){       
+
+        // We want to work with a PHP object form the Json to get the message
+        $result = json_decode($result);
+        $result = $result->message;
+
+        // If the message is long (Trump is long-winded), split into two lines at the nearest word near the middle
+        if(strlen($result) >= 120){
+            $halfWayPos = strlen($result) / 2;
+            $nextWordPos = strpos($result, " ", $halfWayPos) + 1;
+            $result = substr_replace($result, "<br />",$nextWordPos, 0);
+        }
+    }    
 
     // Returns text with quote transformations
     return wptexturize( $result );
