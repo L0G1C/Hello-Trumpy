@@ -25,10 +25,10 @@ When activated, this plugin will pull a random quote using the amazing [What Doe
 API, and place it in the upper right hand corner of every page on the Admin Dashboard.
 
 Features great, inspirational quotes such as:
-''"My whole life is about winning. I don't lose often. I almost never lose."'
-'"I love the poorly educated."'
-'"I have a great relationship with the blacks."'
-'"I'd like to use really foul language. I won't do it. I was going to say they're really full of s**t, but I won't say that."'
+>"My whole life is about winning. I don't lose often. I almost never lose."
+> "I love the poorly educated."
+> "I have a great relationship with the blacks."
+> "I'd like to use really foul language. I won't do it. I was going to say they're really full of s**t, but I won't say that."
 
 == Installation ==
 
