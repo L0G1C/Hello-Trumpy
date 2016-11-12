@@ -18,12 +18,14 @@ function get_hello_trumpy_quote() {
         include_once( ABSPATH . WPINC. '/class-http.php' );
     }
 
-    $result = wp_remote_request ($url);
+    $wpObject = new WP_Http();
+
+    $result = $wpObject->get($url);
 
     if (!is_wp_error($result)){       
 
         // We want to work with a PHP object form the Json to get the message
-        $result = json_decode($result);
+        $result = json_decode($result['body']);
         $result = $result->message;
 
         // If the message is long (Trump is long-winded), split into two lines at the nearest word near the middle
