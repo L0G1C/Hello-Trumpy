@@ -11,30 +11,61 @@ License: GPLv2+
 */
 
 function get_hello_trumpy_quote() {
-    $url = "https://api.whatdoestrumpthink.com/api/v1/quotes/random";
+    $url = "https://api.whatdoestrumpthink.com/api/v1/quotes/";
+    $result = "";
+	$transResult = get_transient('trumpyAPI');
 
-    // Use WP Http to pull API data
-    if( !class_exists( 'WP_Http' ) ) {
-        include_once( ABSPATH . WPINC. '/class-http.php' );
-    }
+	if($transResult === false) {
 
-    $wpObject = new WP_Http();
+		// Use WP Http to pull API data
+		if ( ! class_exists( 'WP_Http' ) ) {
+			include_once( ABSPATH . WPINC . '/class-http.php' );
+		}
 
-    $result = $wpObject->get($url);
+		$wpObject = new WP_Http();
 
-    if (!is_wp_error($result)){       
+		$result = $wpObject->get( $url );
+		set_transient('trumpyAPI', $result, 60*60*24*7); // Hold transient data for 1 week in seconds
 
-        // We want to work with a PHP object form the Json to get the message
-        $result = json_decode($result['body']);
-        $result = $result->message;
+		if ( ! is_wp_error( $transResult ) ) {
 
-        // If the message is long (Trump is long-winded), split into two lines at the nearest word near the middle
-        if(strlen($result) >= 120){
-            $halfWayPos = strlen($result) / 2;
-            $nextWordPos = strpos($result, " ", $halfWayPos) + 1;
-            $result = substr_replace($result, "<br />",$nextWordPos, 0);
-        }
-    }    
+			// We want to work with a PHP object form the Json to get the message
+			$result = json_decode( $result['body'] );
+			$result = $result->messages->non_personalized;
+
+			// Get one Random quote from the list of quotes
+			//$result = explode(',', $result);
+			$result = $result[array_rand($result, 1)];
+
+			// If the message is long (Trump is long-winded), split into two lines at the nearest word near the middle
+			if ( strlen( $result ) >= 120 ) {
+				$halfWayPos  = strlen( $result ) / 2;
+				$nextWordPos = strpos( $result, " ", $halfWayPos ) + 1;
+				$result      = substr_replace( $result, "<br />", $nextWordPos, 0 );
+			}
+		}
+
+	} else{
+		if ( ! is_wp_error( $transResult ) ) {
+
+			// We want to work with a PHP object form the Json to get the message
+			$result = json_decode( $transResult['body'] );
+			$result = $result->messages->non_personalized;
+
+			// Get one Random quote from the list of quotes
+			//$result = explode(',', $result);
+			$result = $result[array_rand($result, 1)];
+
+			// If the message is long (Trump is long-winded), split into two lines at the nearest word near the middle
+			if ( strlen( $result ) >= 120 ) {
+				$halfWayPos  = strlen( $result ) / 2;
+				$nextWordPos = strpos( $result, " ", $halfWayPos ) + 1;
+				$result      = substr_replace( $result, "<br />", $nextWordPos, 0 );
+			}
+		}
+	}
+
+
 
     // Returns text with quote transformations
     return wptexturize( $result );
@@ -45,6 +76,9 @@ function hello_trumpy() {
     $quote = get_hello_trumpy_quote();
     echo "<p id='trumpy'><em>$quote</em></p>";
 }
+
+// Create [hello-trumpy] shortcode
+add_shortcode('hello-trumpy', 'hello_trumpy');
 
 // Hook into admin_notices to display the quote.
 add_action( 'admin_notices', 'hello_trumpy' );
