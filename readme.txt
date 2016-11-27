@@ -4,7 +4,7 @@ Donate link: http://leojerez.com
 Tags: admin, text, hello, dolly, trump, simple, plugins
 Requires at least: 3.0.1
 Tested up to: 4.6.1
-Stable tag: trunk
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,10 +24,18 @@ base Wordpress instillation, this plugin is Hello, Dolly "Trumpified"!
 When activated, this plugin will pull a random quote using the amazing [What Does Trump Think](https://whatdoestrumpthink.com/api-docs/index.html)
 API, and place it in the upper right hand corner of every page on the Admin Dashboard.
 
+**Now with shortcode support!**
+You can now add a shortcode "[hello-trumpy]" to your post/page and a random Trump quote shall appear.
+If you'd like to, you can use the "shortcode enabled text" widget plugin, or have a theme developer create a hook in your theme and allow
+the shortcode to be placed in your widgets as well!
+
 Features great, inspirational quotes such as:
 >"My whole life is about winning. I don't lose often. I almost never lose."
+
 > "I love the poorly educated."
+
 > "I have a great relationship with the blacks."
+
 > "I'd like to use really foul language. I won't do it. I was going to say they're really full of s**t, but I won't say that."
 
 == Installation ==
@@ -47,6 +55,11 @@ Because I choose to.
 2. Another Quote by President Trump
 
 == Changelog ==
+
+= 1.1 =
+* Updated plugin to work with a cached set of quotes from the API using WP Transients
+* Shortcode support added
+
 
 = 1.0 =
 * Initial Version
